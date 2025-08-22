@@ -1,5 +1,5 @@
 #include "so_long.h"
-void	init_struct(t_so_long *map)
+void	init_struct(t_map *map)
 {
 	map->fd = -1;
 }

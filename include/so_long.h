@@ -6,13 +6,14 @@
 #include <fcntl.h>
 #include <stdio.h> //perror
 
-typedef struct s_so_long
+typedef struct s_map
 {
-	int	fd;
+	int		fd;
 	char	*line;
-}t_so_long;
+	char	*append_line;
+}t_map;
 
 int	ft_isspace(char c);
-void	init_struct(t_so_long *map);
+void	init_struct(t_map *map);
 
 #endif
