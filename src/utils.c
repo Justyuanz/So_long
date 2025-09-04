@@ -1,7 +1,10 @@
 #include "so_long.h"
-void	init_struct(t_map *map)
+void	init_struct(char *file, t_map *map)
 {
 	map->fd = -1;
+	map->row = 0;
+	map->grid = NULL;
+	map->file_name = file;
 }
 int	ft_isspace(char c)
 {

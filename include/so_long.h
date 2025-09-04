@@ -5,15 +5,21 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <stdio.h> //perror
+#include <stdbool.h>
 
 typedef struct s_map
 {
 	int		fd;
+	size_t 	col;
+	size_t		row;
 	char	*line;
-	char	*append_line;
+	char	*file_name;;
+	char	**grid;
 }t_map;
 
 int	ft_isspace(char c);
-void	init_struct(t_map *map);
+void	init_struct(char *file, t_map *map);
+bool check_map(t_map *map);
+
 
 #endif

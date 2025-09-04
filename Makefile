@@ -13,6 +13,8 @@ LIBFT_A = $(LIBFT_DIR)/libft.a
 SRCS = $(addprefix $(SRCDIR)/,\
 		main.c \
 		utils.c \
+		check_map.c \
+		map_path.c \
 )
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 DEPS = $(OBJS:.o=.d)
