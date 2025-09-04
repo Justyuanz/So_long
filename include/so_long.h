@@ -11,7 +11,9 @@ typedef struct s_map
 {
 	int		fd;
 	size_t 	col;
-	size_t		row;
+	size_t	row;
+	size_t	playerx;
+	size_t	playery;
 	char	*line;
 	char	*file_name;;
 	char	**grid;
@@ -20,6 +22,6 @@ typedef struct s_map
 int	ft_isspace(char c);
 void	init_struct(char *file, t_map *map);
 bool check_map(t_map *map);
-
+bool check_path(t_map *map);
 
 #endif

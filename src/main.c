@@ -17,7 +17,10 @@ static void validate_file(t_map *map)
 	len = ft_strlen(map->file_name);
 	if (map->file_name[len - 4] != '.' || map->file_name[len - 3] != 'b'
 	|| map->file_name[len - 2] != 'e' || map->file_name[len - 1] != 'r')
+	{
+		write(2, "Error\n", 6);
 		exit(EXIT_FAILURE);
+	}
 }
 
 static void count_map_rows(t_map *map) //NULL GUARD FOR WHILE LOOP
@@ -85,5 +88,5 @@ int	main(int argc, char	**argv)
 	count_map_rows(&map);
 	build_map(&map);
 	if (check_map(&map))
-		check_map_path(&map);
+		check_path(&map);
 }

@@ -62,7 +62,11 @@ static bool element_vaidation(t_map *map)
 			if(map->grid[x][y] == 'E')
 				exit++;
 			if(map->grid[x][y] == 'P')
+			{
 				start_position++;
+				map->playerx = x;
+				map->playery = y;
+			}
 			y++;
 		}
 		x++;
