@@ -41,7 +41,7 @@ static void flood_fill(t_map *copy, size_t x, size_t y)
 	flood_fill(copy, x, y + 1);
 	flood_fill(copy, x, y - 1);
 }
-bool check_path(t_map *map)
+void check_path(t_map *map)
 {
 	t_map	copy;
 	size_t	x;
@@ -58,12 +58,11 @@ bool check_path(t_map *map)
 			if (copy.grid[x][y] == 'E' || copy.grid[x][y] == 'C')
 			{
 				ft_putstr_fd("not valid path\n", 2);
-				return (false); //free the copy before return
+				return ; //free the copy before return
 			}
 			y++;
 		}
 		x++;
 	}
 	//free the copy
-	return (true);
 }

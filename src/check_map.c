@@ -100,29 +100,28 @@ static bool check_walls(t_map *map)
 	return (true);
 }
 
-bool check_map(t_map *map) //need to do safe exits in this function
+void check_map(t_map *map) //need to do safe exits in this function
 {
 	if (!check_map_rectangular(map))
 	{
-		printf("map is not rectangular\n");
-		return (false);
+		//printf("map is not rectangular\n");
+		return ;
 	}
 	if (!check_charset(map))
 	{
-		printf("invalid charset\n");
-		return (false);
+		//printf("invalid charset\n");
+		return ;
 	}
 	if (!element_vaidation(map))
 	{
-		printf("invalid amount of element\n");
-		return (false);
+		//printf("invalid amount of element\n");
+		return ;
 	}
 	if (!check_walls(map))
 	{
-		printf("map is not surrounded by walls\n");
-		return (false);
+		//printf("map is not surrounded by walls\n");
+		return ;
 	}
-	return (true);
 }
 /*need to (read) map content
 1:width should be >1

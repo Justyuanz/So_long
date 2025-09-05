@@ -75,7 +75,8 @@ static void build_map(t_map *map)
 
 int	main(int argc, char	**argv)
 {
-	t_map map;
+	t_game	game;
+	t_map 	map;
 
 	if (argc != 2)
 	{
@@ -87,6 +88,13 @@ int	main(int argc, char	**argv)
 	validate_file(&map);
 	count_map_rows(&map);
 	build_map(&map);
-	if (check_map(&map))
-		check_path(&map);
+	check_map(&map);
+	check_path(&map);
+	game.map = &map;
+	game.mlx = mlx_init(TILE * map.col, TILE * map.row, "SO_LONG", true);
+	if(!game.mlx)
+	{
+		return(EXIT_FAILURE); //FREE
+	}
+	render_game(&game);
 }
