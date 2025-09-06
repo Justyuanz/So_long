@@ -1,14 +1,12 @@
 #include "so_long.h"
+
 static bool check_map_rectangular(t_map *map)
 {
 	int x;
 
 	x = 1;
 	if (map->row <= 1)
-	{
-		ft_putendl_fd("map too small\n", 2);
-		return (false); //change to safe free and exit
-	}
+		free_map_and_exit(map, "map less than 1 row\n");
 	map->col = ft_strlen(map->grid[0]);
 	while (map->grid[x] != NULL)
 	{
@@ -103,25 +101,13 @@ static bool check_walls(t_map *map)
 void check_map(t_map *map) //need to do safe exits in this function
 {
 	if (!check_map_rectangular(map))
-	{
-		//printf("map is not rectangular\n");
-		return ;
-	}
+		free_map_and_exit(map, "map is not rectangular\n");
 	if (!check_charset(map))
-	{
-		//printf("invalid charset\n");
-		return ;
-	}
+		free_map_and_exit(map,"invalid charset\n");
 	if (!element_vaidation(map))
-	{
-		//printf("invalid amount of element\n");
-		return ;
-	}
+		free_map_and_exit(map,"invalid amount of element\n");
 	if (!check_walls(map))
-	{
-		//printf("map is not surrounded by walls\n");
-		return ;
-	}
+		free_map_and_exit(map,"map is not surrounded by walls\n");
 }
 /*need to (read) map content
 1:width should be >1

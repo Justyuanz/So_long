@@ -5,28 +5,27 @@ static void open_map(t_map *map)
 	if (map->fd == -1)
 		exit_with_msg("file open error\n");
 }
-static void validate_file(t_map *map)
+static void validate_file_name(t_map *map)
 {
 	int	len;
 
-	if (!map->file_name || map->file_name[1] == '\0')
-		exit (EXIT_FAILURE);
+	if (!map || !map->file_name || map->file_name[1] == '\0')
+		exit_with_msg("file does not exist\n");
 	len = ft_strlen(map->file_name);
-	if (map->file_name[len - 4] != '.' || map->file_name[len - 3] != 'b'
+	if (len <= 4 || map->file_name[len - 4] != '.' || map->file_name[len - 3] != 'b'
 	|| map->file_name[len - 2] != 'e' || map->file_name[len - 1] != 'r')
-	{
-		write(2, "Error\n", 6);
-		exit(EXIT_FAILURE);
-	}
+		exit_with_msg("not a .ber file\n");
 }
 
-static void count_map_rows(t_map *map) //NULL GUARD FOR WHILE LOOP
+static void count_map_rows(t_map *map) //double check if the tmp map->line is fully freed
 {
+	if (!map)
+		exit_with_msg("Error\n");
 	open_map(map);
 	while (1)
 	{
 		map->line = get_next_line(map->fd);
-		if (!map->line) //do i need to free last time here?
+		if (!map->line)
 			break;
 		map->row++;
 		free(map->line);
@@ -42,6 +41,8 @@ static void str_trimming(t_map *map)
 
 	x = 0;
 	y = 0;
+	if (!map || !map->grid)
+		exit_with_msg("Error\n");
 	while (map->grid[x] != NULL)
 	{
 		len = ft_strlen(map->grid[x] );
@@ -50,14 +51,14 @@ static void str_trimming(t_map *map)
 		x++;
 	}
 }
-static void build_map(t_map *map)
+static void build_map(t_map *map) //first calloc happened here
 {
 	size_t	x;
 
 	x = 0;
 	map->grid = ft_calloc(map->row + 1, sizeof(char *));
 	if (!map->grid)
-		return ;//change to safe free and exit
+		exit_with_msg("calloc fails\n");
 	open_map(map);
 	while (x < map->row)
 	{
@@ -70,7 +71,14 @@ static void build_map(t_map *map)
 	str_trimming(map);
 	close(map->fd);
 }
-
+static void map_validation(t_map *map)
+{
+	validate_file_name(&map);
+	count_map_rows(&map);
+	build_map(&map);
+	check_map(&map);
+	check_path(&map);
+}
 int	main(int argc, char	**argv)
 {
 	t_game	game;
@@ -79,11 +87,7 @@ int	main(int argc, char	**argv)
 	if (argc != 2)
 		exit_with_msg("Error\n");
 	init_struct(argv[1], &map);
-	validate_file(&map);
-	count_map_rows(&map); //a function for map validation
-	build_map(&map);
-	check_map(&map);
-	check_path(&map);
+	map_validation(&map);
 	game.map = &map;
 	game.mlx = mlx_init(TILE * map.col, TILE * map.row, "SO_LONG", true);
 	if(!game.mlx)
@@ -93,3 +97,4 @@ int	main(int argc, char	**argv)
 	render_game(&game);
 	mlx_loop(game.mlx);
 }
+//check all the malloc and 

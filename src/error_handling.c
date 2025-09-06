@@ -1,8 +1,9 @@
 #include "so_long.h"
 
 void exit_with_msg(char *msg)
-{
-	ft_putstr_fd(msg, 2);
+{	
+	if(msg)
+		ft_putstr_fd(msg, 2);
 	exit (EXIT_FAILURE);
 }
 
@@ -23,8 +24,13 @@ void	free_2d_arr(char **arr)
 	arr = NULL;
 }
 
-void free_map()
+void free_map_and_exit(t_map *map, char *msg)
 {
-	//free map->line
-	//free map->grid
+	if(map->grid)
+		free_2d_arr(map->grid);
+	exit_with_msg(msg);
+}
+void free_game()
+{
+
 }

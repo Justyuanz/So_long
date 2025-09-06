@@ -58,6 +58,8 @@ void check_map(t_map *map);
 void check_path(t_map *map);
 void render_game(t_game *game);
 
-void exit_with_msg(char *msg)
+void exit_with_msg(char *msg);
+void free_map_and_exit(t_map *map, char *msg);
+void free_2d_arr(char **arr);
 
 #endif

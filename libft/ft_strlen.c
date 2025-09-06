@@ -6,7 +6,7 @@
 /*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 17:50:38 by jinzhang          #+#    #+#             */
-/*   Updated: 2025/05/05 22:15:48 by jinzhang         ###   ########.fr       */
+/*   Updated: 2025/09/06 14:47:11 by jinzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 size_t	ft_strlen(const char *s)
 {
 	size_t	i;
-
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i] != '\0')
 	{

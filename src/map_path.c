@@ -12,7 +12,7 @@ static void map_copy(t_map *copy, t_map *map)
 	x = 0;
 	 copy->grid =ft_calloc((map->row + 1),  sizeof(char *));
 	 if(!copy->grid)
-	 	return; //safe exit
+	 	free_map_and_exit(map, "calloc failed\n");
 	 copy->col = map->col;
 	 copy->row = map->row;
 	 copy->playerx = map->playerx;
@@ -21,6 +21,8 @@ static void map_copy(t_map *copy, t_map *map)
 	 {
 		y = 0;
 		copy->grid[x] = ft_calloc((map->col + 1), sizeof(char));
+		if(!copy->grid)
+			free_map_and_exit(map, "calloc failed\n");
 		while(map->grid[x][y])
 		{
 			copy->grid[x][y] = map->grid[x][y];
@@ -56,13 +58,10 @@ void check_path(t_map *map)
 		while(copy.grid[x][y])
 		{
 			if (copy.grid[x][y] == 'E' || copy.grid[x][y] == 'C')
-			{
-				ft_putstr_fd("not valid path\n", 2);
-				return ; //free the copy before return
-			}
+				free_map_and_exit(map, "not valid path\n");
 			y++;
 		}
 		x++;
 	}
-	//free the copy
+	free_2d_arr(copy.grid);
 }
