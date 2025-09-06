@@ -16,8 +16,10 @@ SRCS = $(addprefix $(SRCDIR)/,\
 		main.c \
 		utils.c \
 		check_map.c \
+		check_map2.c \
 		map_path.c \
 		render_game.c \
+		player_events.c \
 		error_handling.c \
 )
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

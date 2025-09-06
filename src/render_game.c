@@ -1,8 +1,4 @@
 #include "so_long.h"
-//record how many map->collectable is in the map
-//change macro to store floor pixels
-//resize according to 64(change tile to 64 too)
-//try to draw all the assets correctly
 
 static bool load_texture(t_game *game)
 {
@@ -26,12 +22,24 @@ static bool load_texture(t_game *game)
 	if (!game->image->floor || !game->image->wall ||
 		!game->image->player || !game->image->collectable || !game->image->exit)
 		return (false);
+	resize_image(game);
+	return (true);
+}
+static void resize_image(t_game *game)
+{
+	mlx_delete_texture(game->texture->floor);
+	mlx_delete_texture(game->texture->wall);
+	mlx_delete_texture(game->texture->player);
+	mlx_delete_texture(game->texture->collectable);
+	mlx_delete_texture(game->texture->exit);
+	free(game->texture);
+    game->texture = NULL;
 	mlx_resize_image(game->image->floor, TILE, TILE);
 	mlx_resize_image(game->image->wall, TILE, TILE);
 	mlx_resize_image(game->image->player, TILE, TILE);
 	mlx_resize_image(game->image->collectable, TILE * 0.8, TILE * 0.8);
 	mlx_resize_image(game->image->exit, TILE, TILE);
-	return (true);
+	
 }
 static void draw_map(t_game *game)
 {
@@ -60,49 +68,6 @@ static void draw_map(t_game *game)
 	}
 	mlx_image_to_window(game->mlx, game->image->player, game->map->playerx * TILE, game->map->playery * TILE);
 }
-void collect_item(t_game *game, int dest_y, int dest_x)
-{
-	size_t	i;
-
-	i = 0;
-	while ( i < game->collectable_count)
-	{
-		if (game->image->collectable->instances[i].x == dest_x * TILE &&
-			game->image->collectable->instances[i].y == dest_y * TILE)
-			{
-				if (game->image->collectable->instances[i].enabled == true)
-					game->map->collectable--;
-				game->image->collectable->instances[i].enabled = false;
-				break;
-			}
-		i++;
-	}
-
-}
-
-void move_player(t_game *game, int dest_x, int dest_y)
-{
-	char	position;
-
-	position = game->map->grid[dest_y][dest_x];
-	if (position == '1')
-		return;
-	game->map->playerx = dest_x;
-	game->map->playery = dest_y;
-	game->image->player->instances[0].x = dest_x * TILE;
-	game->image->player->instances[0].y = dest_y * TILE;
-	if (position == 'C')
-	{
-		collect_item(game, dest_y, dest_x);
-		printf("c:%zu\n", game->map->collectable);
-	}
-	if (game->map->collectable == 0)
-		game->image->exit->instances[0].enabled = true;
-	if (game->map->collectable == 0 && position == 'E')
-		mlx_close_window(game->mlx);
-	//check x or y and move the instance
-	//print and count the move
-}
 void key_hook(mlx_key_data_t keydata, void *param)
 {
 	t_game *game;
@@ -122,16 +87,20 @@ void key_hook(mlx_key_data_t keydata, void *param)
 		move_player(game, x - 1, y);
 	else if(keydata.key == MLX_KEY_D && keydata.action == MLX_PRESS)
 		move_player(game, x + 1, y);
-	x = game->map->playerx;
-	y = game->map->playery;
 }
 void render_game(t_game *game)
 {
 	init_game(game);
 	if (!game)
-		return ; //free
+	{
+		free_game(&game);
+		exit_with_msg("Error init game\n");
+	}
 	if (!load_texture(game))
-		return ; //destroy and exit
+	{
+		free_game(&game);
+		exit_with_msg("Error load textures\n");
+	}
 	draw_map(game);
 	mlx_key_hook(game->mlx, &key_hook, game);
 }

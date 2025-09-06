@@ -55,15 +55,23 @@ typedef struct s_gmae
 }t_game;
 
 
-int	ft_isspace(char c);
-void	init_struct(char *file, t_map *map);
+int	 ft_isspace(char c);
+void open_map(t_map *map);
+void init_struct(char *file, t_map *map);
 void init_game(t_game *game);
+
+void map_validation(t_map *map);
 void check_map(t_map *map);
 void check_path(t_map *map);
+
 void render_game(t_game *game);
+void collect_item(t_game *game, int dest_y, int dest_x);
+void move_player(t_game *game, int dest_x, int dest_y);
 
 void exit_with_msg(char *msg);
 void free_map_and_exit(t_map *map, char *msg);
 void free_2d_arr(char **arr);
+void free_map_and_exit(t_map *map, char *msg);
+void free_game(t_game *game);
 
 #endif

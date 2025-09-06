@@ -5,7 +5,6 @@ static void map_copy(t_map *copy, t_map *map)
 	int		x;
 	int		y;
 
-	x = 0;
 	 copy->grid =ft_calloc((map->row + 1),  sizeof(char *));
 	 if(!copy->grid)
 	 	free_map_and_exit(map, "calloc failed\n");
@@ -13,22 +12,19 @@ static void map_copy(t_map *copy, t_map *map)
 	 copy->row = map->row;
 	 copy->playerx = map->playerx;
 	 copy->playery = map->playery;
-	 while (map->grid[x] != NULL)
+	 x = -1;
+	 while (map->grid[++x] != NULL)
 	 {
-		y = 0;
+		y = -1; //check if it is correct to be -1
 		copy->grid[x] = ft_calloc((map->col + 1), sizeof(char));
-		if(!copy->grid)
+		if(!copy->grid[x])
 		{
 			free_2d_arr(copy->grid);
 			free_map_and_exit(map, "calloc failed\n");
 		}
-		while(map->grid[x][y])
-		{
+		while(map->grid[x][++y])
 			copy->grid[x][y] = map->grid[x][y];
-			y++;
-		}
 		copy->grid[x][y] = '\0';
-		x++;
 	 }
 	 copy->grid[x] = NULL;
 }

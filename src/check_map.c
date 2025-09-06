@@ -1,135 +1,78 @@
-#include "so_long.h"
+#include"so_long.h"
 
-static bool check_map_rectangular(t_map *map)
+static void validate_file_name(t_map *map)
 {
-	int x;
+	int	len;
 
-	x = 1;
-	if (map->row <= 1)
-		free_map_and_exit(map, "map less than 1 row\n");
-	map->col = ft_strlen(map->grid[0]);
-	while (map->grid[x] != NULL)
-	{
-		if (map->col != (ft_strlen(map->grid[x])))
-			return (false);
-		x++;
-	}
-	return (true);
+	if (!map || !map->file_name || map->file_name[1] == '\0')
+		exit_with_msg("file does not exist\n");
+	len = ft_strlen(map->file_name);
+	if (len <= 4 || map->file_name[len - 4] != '.' || map->file_name[len - 3] != 'b'
+	|| map->file_name[len - 2] != 'e' || map->file_name[len - 1] != 'r')
+		exit_with_msg("not a .ber file\n");
 }
-static bool check_charset(t_map *map)
+
+static void count_map_rows(t_map *map)
+{
+	if (!map)
+		exit_with_msg("Error\n");
+	open_map(map);
+	while (1)
+	{
+		map->line = get_next_line(map->fd);
+		if (!map->line)
+			break;
+		map->row++;
+		free(map->line);
+		map->line = NULL;
+	}
+	close(map->fd);
+}
+
+static void str_trimming(t_map *map)
 {
 	size_t x;
 	size_t y;
+	size_t len;
 
 	x = 0;
 	y = 0;
+	if (!map || !map->grid)
+		exit_with_msg("Error\n");
 	while (map->grid[x] != NULL)
 	{
-		y = 0;
-		while ( y < ft_strlen(map->grid[0]))
-		{
-			if (map->grid[x][y] != '0' && map->grid[x][y] != '1'
-				&& map->grid[x][y] != 'C' && map->grid[x][y] != 'E' &&
-				map->grid[x][y] != 'P')
-				return (false);
-			y++;
-		}
+		len = ft_strlen(map->grid[x] );
+		if (len > 0 && map->grid[x][len - 1] == '\n')
+			map->grid[x][len - 1] = '\0';
 		x++;
 	}
-	return (true);
 }
-static bool element_vaidation(t_map *map)
+static void build_map(t_map *map)
 {
-	size_t x;
-	size_t y;
-	int	start_position;
-
-	start_position = 0;
-	x = 0;
-	while (map->grid[x] != NULL)
-	{
-		y = 0;
-		while (y < (ft_strlen(map->grid[0])))
-		{
-			if (map->grid[x][y] == 'C')
-				map->collectable++;
-			if(map->grid[x][y] == 'E')
-				map->exit++;
-			if(map->grid[x][y] == 'P')
-			{
-				start_position++;
-				map->playerx = y;
-				map->playery = x;
-			}
-			y++;
-		}
-		x++;
-	}
-	if (map->collectable >= 1 && map->exit == 1 && start_position == 1)
-		return (true);
-	return (false);
-}
-static bool check_walls(t_map *map)
-{
-	size_t x;
-	size_t y;
-	size_t strlen;
+	size_t	x;
 
 	x = 0;
-	y = 0;
-	strlen = ft_strlen(map->grid[0]);
-	while (map->grid[x] != NULL)
+	map->grid = ft_calloc(map->row + 1, sizeof(char *));
+	if (!map->grid)
+		exit_with_msg("calloc fails\n");
+	open_map(map);
+	while (x < map->row)
 	{
-		y = 0;
-		while ( y < strlen)
-		{
-			if (map->grid[0][y] != '1' || map->grid[map->row - 1][y] != '1')
-				return (false);
-			 else if (map->grid[x][0] != '1' || map->grid[x][strlen-1] != '1')
-				return (false);
-			y++;
-		}
+		map->grid[x] = get_next_line(map->fd);
+		if (!map->grid)
+			break;
 		x++;
 	}
-	return (true);
+	map->grid[x] = NULL;
+	str_trimming(map);
+	close(map->fd);
 }
 
-void check_map(t_map *map) //need to do safe exits in this function
+void map_validation(t_map *map)
 {
-	if (!check_map_rectangular(map))
-		free_map_and_exit(map, "map is not rectangular\n");
-	if (!check_charset(map))
-		free_map_and_exit(map,"invalid charset\n");
-	if (!element_vaidation(map))
-		free_map_and_exit(map,"invalid amount of element\n");
-	if (!check_walls(map))
-		free_map_and_exit(map,"map is not surrounded by walls\n");
+	validate_file_name(map);
+	count_map_rows(map);
+	build_map(map);
+	check_map(map);
+	check_path(map);
 }
-/*need to (read) map content
-1:width should be >1
-2:flag for each character, at least each of them
-3:height > 1
-
-0 for an empty space,
-1 for a wall,
-C for a map->collectable,
-E for a map exit,
-P for the player’s starting position.
-
-
-The map must be rectangular.
-The map must be enclosed/surrounded by walls. If it is not, the program must
-return an error.
-• You must verify if there is a valid path in the map.
-You must be able to parse any kind of map, as long as it respects the above rules.
-• Another example of a minimal .ber map:
-1111111111111111111111111111111111
-1E0000000000000C00000C000000000001
-1010010100100000101001000000010101
-1010010010101010001001000000010101
-1P0000000C00C0000000000000000000C1
-1111111111111111111111111111111111
-• If any misconfiguration is encountered in the file, the program must exit cleanly,
-and return "Error\n" followed by an explicit error message of your choice.
-*/
-

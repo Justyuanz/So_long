@@ -1,4 +1,5 @@
 #include "so_long.h"
+
 void	init_struct(char *file, t_map *map)
 {
 	map->fd = -1;
@@ -20,4 +21,10 @@ int	ft_isspace(char c)
 {
 	return (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r'
 		|| c == ' ');
+}
+void open_map(t_map *map)
+{
+	map->fd = open(map->file_name, O_RDONLY);
+	if (map->fd == -1)
+		exit_with_msg("file open error\n");
 }
