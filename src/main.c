@@ -3,10 +3,7 @@ static void open_map(t_map *map)
 {
 	map->fd = open(map->file_name, O_RDONLY);
 	if (map->fd == -1)
-	{
-		perror(map->file_name);
-		exit(EXIT_FAILURE);
-	}
+		exit_with_msg("file open error\n");
 }
 static void validate_file(t_map *map)
 {
@@ -29,10 +26,11 @@ static void count_map_rows(t_map *map) //NULL GUARD FOR WHILE LOOP
 	while (1)
 	{
 		map->line = get_next_line(map->fd);
-		if (!map->line)
+		if (!map->line) //do i need to free last time here?
 			break;
 		map->row++;
 		free(map->line);
+		map->line = NULL;
 	}
 	close(map->fd);
 }
@@ -57,7 +55,7 @@ static void build_map(t_map *map)
 	size_t	x;
 
 	x = 0;
-	map->grid = malloc ((map->row + 1) * sizeof(char *));
+	map->grid = ft_calloc(map->row + 1, sizeof(char *));
 	if (!map->grid)
 		return ;//change to safe free and exit
 	open_map(map);
@@ -79,14 +77,10 @@ int	main(int argc, char	**argv)
 	t_map 	map;
 
 	if (argc != 2)
-	{
-		write(2, "Error\n", 6);
-		exit (EXIT_FAILURE);
-	}
-
+		exit_with_msg("Error\n");
 	init_struct(argv[1], &map);
 	validate_file(&map);
-	count_map_rows(&map);
+	count_map_rows(&map); //a function for map validation
 	build_map(&map);
 	check_map(&map);
 	check_path(&map);
@@ -97,4 +91,5 @@ int	main(int argc, char	**argv)
 		return(EXIT_FAILURE); //FREE
 	}
 	render_game(&game);
+	mlx_loop(game.mlx);
 }

@@ -18,6 +18,7 @@ SRCS = $(addprefix $(SRCDIR)/,\
 		check_map.c \
 		map_path.c \
 		render_game.c \
+		error_handling.c \
 )
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 DEPS = $(OBJS:.o=.d)

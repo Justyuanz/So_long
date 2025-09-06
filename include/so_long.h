@@ -18,7 +18,7 @@ typedef struct s_texture
 	mlx_texture_t	*wall;
 	mlx_texture_t	*floor;
 	mlx_texture_t	*player;
-	mlx_texture_t	*collectible;
+	mlx_texture_t	*collectable;
 	mlx_texture_t	*exit;
 }t_texture;
 
@@ -27,7 +27,7 @@ typedef struct s_image
 	mlx_image_t	*wall;
 	mlx_image_t	*floor;
 	mlx_image_t	*player;
-	mlx_image_t	*collectible;
+	mlx_image_t	*collectable;
 	mlx_image_t	*exit;
 }t_image;
 
@@ -57,5 +57,7 @@ void	init_struct(char *file, t_map *map);
 void check_map(t_map *map);
 void check_path(t_map *map);
 void render_game(t_game *game);
+
+void exit_with_msg(char *msg)
 
 #endif

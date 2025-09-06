@@ -2,7 +2,7 @@
 //find starting position
 //make a copy of the map
 //flood fill the copy (mark visited)
-//check if there's any exit or collectible left
+//check if there's any exit or collectable left
 
 static void map_copy(t_map *copy, t_map *map)
 {
@@ -10,7 +10,7 @@ static void map_copy(t_map *copy, t_map *map)
 	int		y;
 
 	x = 0;
-	 copy->grid = malloc((map->row + 1) * sizeof(char *));
+	 copy->grid =ft_calloc((map->row + 1),  sizeof(char *));
 	 if(!copy->grid)
 	 	return; //safe exit
 	 copy->col = map->col;
@@ -20,7 +20,7 @@ static void map_copy(t_map *copy, t_map *map)
 	 while (map->grid[x] != NULL)
 	 {
 		y = 0;
-		copy->grid[x] = malloc((map->col + 1) * sizeof(char));
+		copy->grid[x] = ft_calloc((map->col + 1), sizeof(char));
 		while(map->grid[x][y])
 		{
 			copy->grid[x][y] = map->grid[x][y];
