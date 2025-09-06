@@ -41,6 +41,8 @@ typedef struct s_map
 	size_t	row;
 	size_t	playerx;
 	size_t	playery;
+	size_t	collectable;
+	size_t	exit;
 }t_map;
 
 typedef struct s_gmae
@@ -49,11 +51,13 @@ typedef struct s_gmae
 	t_map		*map;
 	t_image		*image;
 	t_texture	*texture;
+	size_t		collectable_count;
 }t_game;
 
 
 int	ft_isspace(char c);
 void	init_struct(char *file, t_map *map);
+void init_game(t_game *game);
 void check_map(t_map *map);
 void check_path(t_map *map);
 void render_game(t_game *game);

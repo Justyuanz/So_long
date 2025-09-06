@@ -73,11 +73,11 @@ static void build_map(t_map *map) //first calloc happened here
 }
 static void map_validation(t_map *map)
 {
-	validate_file_name(&map);
-	count_map_rows(&map);
-	build_map(&map);
-	check_map(&map);
-	check_path(&map);
+	validate_file_name(map);
+	count_map_rows(map);
+	build_map(map);
+	check_map(map);
+	check_path(map);
 }
 int	main(int argc, char	**argv)
 {
@@ -96,5 +96,6 @@ int	main(int argc, char	**argv)
 	}
 	render_game(&game);
 	mlx_loop(game.mlx);
+	//free everything from map
 }
-//check all the malloc and 
+//check all the malloc after game start

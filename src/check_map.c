@@ -42,12 +42,8 @@ static bool element_vaidation(t_map *map)
 {
 	size_t x;
 	size_t y;
-	int collectable;
-	int exit;
 	int	start_position;
 
-	collectable = 0;
-	exit = 0;
 	start_position = 0;
 	x = 0;
 	while (map->grid[x] != NULL)
@@ -56,20 +52,20 @@ static bool element_vaidation(t_map *map)
 		while (y < (ft_strlen(map->grid[0])))
 		{
 			if (map->grid[x][y] == 'C')
-				collectable++;
+				map->collectable++;
 			if(map->grid[x][y] == 'E')
-				exit++;
+				map->exit++;
 			if(map->grid[x][y] == 'P')
 			{
 				start_position++;
-				map->playerx = x;
-				map->playery = y;
+				map->playerx = y;
+				map->playery = x;
 			}
 			y++;
 		}
 		x++;
 	}
-	if (collectable >= 1 && exit == 1 && start_position == 1)
+	if (map->collectable >= 1 && map->exit == 1 && start_position == 1)
 		return (true);
 	return (false);
 }
@@ -116,7 +112,7 @@ void check_map(t_map *map) //need to do safe exits in this function
 
 0 for an empty space,
 1 for a wall,
-C for a collectable,
+C for a map->collectable,
 E for a map exit,
 P for the player’s starting position.
 

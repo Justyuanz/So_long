@@ -1,8 +1,4 @@
 #include "so_long.h"
-//find starting position
-//make a copy of the map
-//flood fill the copy (mark visited)
-//check if there's any exit or collectable left
 
 static void map_copy(t_map *copy, t_map *map)
 {
@@ -22,7 +18,10 @@ static void map_copy(t_map *copy, t_map *map)
 		y = 0;
 		copy->grid[x] = ft_calloc((map->col + 1), sizeof(char));
 		if(!copy->grid)
+		{
+			free_2d_arr(copy->grid);
 			free_map_and_exit(map, "calloc failed\n");
+		}
 		while(map->grid[x][y])
 		{
 			copy->grid[x][y] = map->grid[x][y];
@@ -50,7 +49,7 @@ void check_path(t_map *map)
 	size_t	y;
 
 	map_copy(&copy, map);
-	flood_fill(&copy, map->playerx, map->playery);
+	flood_fill(&copy, map->playery, map->playerx);
 	x = 0;
 	while (copy.grid[x] != NULL)
 	{
@@ -58,7 +57,10 @@ void check_path(t_map *map)
 		while(copy.grid[x][y])
 		{
 			if (copy.grid[x][y] == 'E' || copy.grid[x][y] == 'C')
+			{
+				free_2d_arr(copy.grid);
 				free_map_and_exit(map, "not valid path\n");
+			}
 			y++;
 		}
 		x++;
