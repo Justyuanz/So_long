@@ -46,11 +46,13 @@ $(MLX_DIR)/build/libmlx42.a: | $(MLX_DIR)
 	make -C $(MLX_BUILD) -j4
 
 clean:
-		rm -rf $(OBJDIR) $(MLX_DIR)
+		rm -rf $(OBJDIR)
+		rm -rf $(MLX_BUILD)
 		make clean -s -C $(LIBFT_DIR)
 
 fclean: clean
 		rm -rf $(NAME)
+		rm -rf $(MLX_DIR)
 		make fclean -s -C $(LIBFT_DIR)
 
 re: fclean all

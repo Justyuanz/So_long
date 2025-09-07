@@ -1,18 +1,31 @@
-#include"so_long.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/07 20:49:52 by jinzhang          #+#    #+#             */
+/*   Updated: 2025/09/07 20:50:40 by jinzhang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static void validate_file_name(t_map *map)
+#include "so_long.h"
+
+static void	validate_file_name(t_map *map)
 {
 	int	len;
 
 	if (!map || !map->file_name || map->file_name[1] == '\0')
 		exit_with_msg("file does not exist\n");
 	len = ft_strlen(map->file_name);
-	if (len <= 4 || map->file_name[len - 4] != '.' || map->file_name[len - 3] != 'b'
-	|| map->file_name[len - 2] != 'e' || map->file_name[len - 1] != 'r')
-		exit_with_msg("not a .ber file\n");
+	if (len <= 4 || map->file_name[len - 4] != '.' || map->file_name[len
+			- 3] != 'b' || map->file_name[len - 2] != 'e' || map->file_name[len
+			- 1] != 'r')
+		exit_with_msg("not a valid .ber file\n");
 }
 
-static void count_map_rows(t_map *map)
+static void	count_map_rows(t_map *map)
 {
 	if (!map)
 		exit_with_msg("Error\n");
@@ -21,7 +34,7 @@ static void count_map_rows(t_map *map)
 	{
 		map->line = get_next_line(map->fd);
 		if (!map->line)
-			break;
+			break ;
 		map->row++;
 		free(map->line);
 		map->line = NULL;
@@ -29,11 +42,11 @@ static void count_map_rows(t_map *map)
 	close(map->fd);
 }
 
-static void str_trimming(t_map *map)
+static void	str_trimming(t_map *map)
 {
-	size_t x;
-	size_t y;
-	size_t len;
+	size_t	x;
+	size_t	y;
+	size_t	len;
 
 	x = 0;
 	y = 0;
@@ -41,13 +54,14 @@ static void str_trimming(t_map *map)
 		exit_with_msg("Error\n");
 	while (map->grid[x] != NULL)
 	{
-		len = ft_strlen(map->grid[x] );
+		len = ft_strlen(map->grid[x]);
 		if (len > 0 && map->grid[x][len - 1] == '\n')
 			map->grid[x][len - 1] = '\0';
 		x++;
 	}
 }
-static void build_map(t_map *map)
+
+static void	build_map(t_map *map)
 {
 	size_t	x;
 
@@ -60,7 +74,7 @@ static void build_map(t_map *map)
 	{
 		map->grid[x] = get_next_line(map->fd);
 		if (!map->grid)
-			break;
+			break ;
 		x++;
 	}
 	map->grid[x] = NULL;
@@ -68,7 +82,7 @@ static void build_map(t_map *map)
 	close(map->fd);
 }
 
-void map_validation(t_map *map)
+void	map_validation(t_map *map)
 {
 	validate_file_name(map);
 	count_map_rows(map);

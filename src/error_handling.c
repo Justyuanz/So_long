@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error_handling.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/07 20:50:53 by jinzhang          #+#    #+#             */
+/*   Updated: 2025/09/07 20:50:56 by jinzhang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 
-void exit_with_msg(char *msg)
+void	exit_with_msg(char *msg)
 {
-	if(msg)
+	if (msg)
 		ft_putstr_fd(msg, 2);
-	exit (EXIT_FAILURE);
+	exit(EXIT_FAILURE);
 }
 
 void	free_2d_arr(char **arr)
@@ -24,28 +36,32 @@ void	free_2d_arr(char **arr)
 	arr = NULL;
 }
 
-void free_map_and_exit(t_map *map, char *msg)
+void	free_map_and_exit(t_map *map, char *msg)
 {
-	if(map->grid)
+	if (map->grid)
 		free_2d_arr(map->grid);
 	exit_with_msg(msg);
 }
 
-void free_game(t_game *game)
+void	free_game(t_game *game)
 {
-    if (game->image) 
+	if (!game)
+		return ;
+	if (game->mlx && game->image)
 	{
-        if (game->image->floor)
-            mlx_delete_image(game->mlx, game->image->floor);
-        if (game->image->wall)
-            mlx_delete_image(game->mlx, game->image->wall);
-        if (game->image->player)
-            mlx_delete_image(game->mlx, game->image->player);
-        if (ameg->image->collectable)
-            mlx_delete_image(game->mlx, game->image->collectable);
-        free(game->image);
-        game->image = NULL;
-    }
+		if (game->image->floor)
+			mlx_delete_image(game->mlx, game->image->floor);
+		if (game->image->wall)
+			mlx_delete_image(game->mlx, game->image->wall);
+		if (game->image->player)
+			mlx_delete_image(game->mlx, game->image->player);
+		if (game->image->collectable)
+			mlx_delete_image(game->mlx, game->image->collectable);
+		if (game->image->exit)
+			mlx_delete_image(game->mlx, game->image->exit);
+		free(game->image);
+		game->image = NULL;
+	}
 	if (game->map)
-		free_2d_arr(game->map->grid);	
+		free_2d_arr(game->map->grid);
 }
