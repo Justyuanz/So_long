@@ -6,7 +6,7 @@
 /*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:51:28 by jinzhang          #+#    #+#             */
-/*   Updated: 2025/09/07 20:52:20 by jinzhang         ###   ########.fr       */
+/*   Updated: 2025/09/08 11:18:07 by jinzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,6 @@ void	check_path(t_map *map)
 		x++;
 	}
 	free_2d_arr(copy.grid);
+	if (TILE * map->col > 4480 || TILE * map->row > 2520)
+		free_map_and_exit(&map, "map too big\n");
 }

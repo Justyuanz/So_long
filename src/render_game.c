@@ -6,7 +6,7 @@
 /*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:53:45 by jinzhang          #+#    #+#             */
-/*   Updated: 2025/09/07 20:53:49 by jinzhang         ###   ########.fr       */
+/*   Updated: 2025/09/08 11:20:57 by jinzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ static bool	load_texture(t_game *game)
 
 void	render_game(t_game *game)
 {
+	init_game(game);
 	if (!game)
 	{
 		free_game(game);
@@ -100,7 +101,6 @@ void	render_game(t_game *game)
 		free_game(game);
 		exit_with_msg("Error loading texture\n");
 	}
-	init_game(game);
 	game->mlx = mlx_init(TILE * game->map->col, TILE * game->map->row,
 			"SO_LONG", true);
 	if (!game->mlx)
