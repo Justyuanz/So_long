@@ -6,7 +6,7 @@
 /*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:50:53 by jinzhang          #+#    #+#             */
-/*   Updated: 2025/09/07 20:50:56 by jinzhang         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:52:03 by jinzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	exit_with_msg(char *msg)
 {
+	ft_putstr_fd("Error: ", 2);
 	if (msg)
 		ft_putstr_fd(msg, 2);
 	exit(EXIT_FAILURE);
@@ -64,4 +65,10 @@ void	free_game(t_game *game)
 	}
 	if (game->map)
 		free_2d_arr(game->map->grid);
+	if (game->mlx)
+	{
+		mlx_terminate(game->mlx);
+		game->mlx = NULL;
+	}
+	delete_texture(game);
 }

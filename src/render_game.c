@@ -6,7 +6,7 @@
 /*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:53:45 by jinzhang          #+#    #+#             */
-/*   Updated: 2025/09/08 11:20:57 by jinzhang         ###   ########.fr       */
+/*   Updated: 2025/09/08 18:11:45 by jinzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ static void	resize_image(t_game *game)
 static bool	convert_image(t_game *game)
 {
 	game->image = ft_calloc(1, sizeof(t_image));
+	if (!game->image)
+	{
+		free_game(game);
+		exit_with_msg("image calloc fail\n");
+	}
 	game->image->floor = mlx_texture_to_image(game->mlx, game->texture->floor);
 	game->image->player = mlx_texture_to_image(game->mlx,
 			game->texture->player);
@@ -76,7 +81,10 @@ static bool	load_texture(t_game *game)
 {
 	game->texture = ft_calloc(1, sizeof(t_texture));
 	if (!game->texture)
-		free_map_and_exit(game->map, "texture calloc fail\n");
+	{
+		free_game(game);
+		exit_with_msg("texture calloc fail\n");
+	}
 	game->texture->floor = mlx_load_png("images/floor.png");
 	game->texture->wall = mlx_load_png("images/wall.png");
 	game->texture->player = mlx_load_png("images/sprite.png");
@@ -90,7 +98,6 @@ static bool	load_texture(t_game *game)
 
 void	render_game(t_game *game)
 {
-	init_game(game);
 	if (!game)
 	{
 		free_game(game);
@@ -101,8 +108,9 @@ void	render_game(t_game *game)
 		free_game(game);
 		exit_with_msg("Error loading texture\n");
 	}
+	init_game(game);
 	game->mlx = mlx_init(TILE * game->map->col, TILE * game->map->row,
-			"SO_LONG", true);
+			"SO_LONG", false);
 	if (!game->mlx)
 	{
 		free_game(game);

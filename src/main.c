@@ -6,7 +6,7 @@
 /*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:51:11 by jinzhang          #+#    #+#             */
-/*   Updated: 2025/09/08 11:17:40 by jinzhang         ###   ########.fr       */
+/*   Updated: 2025/09/08 17:06:19 by jinzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,5 @@ int	main(int argc, char **argv)
 	render_game(&game);
 	mlx_loop(game.mlx);
 	free_game(&game);
-	mlx_terminate(game.mlx);
 	return (0);
 }

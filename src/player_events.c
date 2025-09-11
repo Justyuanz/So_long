@@ -6,7 +6,7 @@
 /*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:52:35 by jinzhang          #+#    #+#             */
-/*   Updated: 2025/09/07 20:53:30 by jinzhang         ###   ########.fr       */
+/*   Updated: 2025/09/08 18:06:31 by jinzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,12 @@ void	draw_map(t_game *game)
 		}
 		x++;
 	}
-	mlx_image_to_window(game->mlx, game->image->player, game->map->playerx
-		* TILE, game->map->playery * TILE);
+	if (mlx_image_to_window(game->mlx, game->image->player, game->map->playerx
+			* TILE, game->map->playery * TILE) < 0)
+	{
+		free_game(game);
+		exit_with_msg("Error drawing image\n");
+	}
 }
 
 static void	collect_item(t_game *game, int dest_y, int dest_x)
@@ -75,7 +79,10 @@ static void	move_player(t_game *game, int dest_x, int dest_y)
 	if (game->map->collectable == 0)
 		game->image->exit->instances[0].enabled = true;
 	if (game->map->collectable == 0 && position == 'E')
+	{
+		ft_putstr_fd("YAYY YOU WIN!", 1);
 		mlx_close_window(game->mlx);
+	}
 }
 
 void	key_hook(mlx_key_data_t keydata, void *param)

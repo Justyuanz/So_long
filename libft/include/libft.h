@@ -6,7 +6,7 @@
 /*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 13:10:58 by jinzhang          #+#    #+#             */
-/*   Updated: 2025/08/20 15:06:12 by jinzhang         ###   ########.fr       */
+/*   Updated: 2025/09/08 13:56:03 by jinzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@
 
 typedef struct s_gnl
 {
-	int			nl;
-	char		*line;
-	ssize_t		bytes_read;
-}	t_gnl;
+	int				nl;
+	char			*line;
+	ssize_t			bytes_read;
+}					t_gnl;
 
-char	*get_next_line(int fd);
-char	*gnl_strjoin(char *pre_line, char *buf, int nl);
-char	*gnl_error_eof(t_gnl *gnl, char *buf);
-int		gnl_find_nl(char	*buf, char c);
-int		gnl_updatebuf(char *buf);
-int		gnl_strlen(char *str);
+char				*get_next_line(int fd);
+char				*gnl_strjoin(char *pre_line, char *buf, int nl);
+char				*gnl_error_eof(t_gnl *gnl, char *buf);
+int					gnl_find_nl(char *buf, char c);
+int					gnl_updatebuf(char *buf);
+int					gnl_strlen(char *str);
 
 typedef struct s_list
 {

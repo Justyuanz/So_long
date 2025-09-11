@@ -6,7 +6,7 @@
 /*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:47:37 by jinzhang          #+#    #+#             */
-/*   Updated: 2025/09/07 20:52:05 by jinzhang         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:39:00 by jinzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@
 # include "MLX42/MLX42.h"
 # include <fcntl.h>
 # include <stdbool.h>
-# include <stdio.h> //perror
+# include <stdio.h>
 # include <stdlib.h>
-# define WIDTH 1024
-# define HEIGHT 180
 # define TILE 64
 
 typedef struct s_texture
@@ -81,7 +79,7 @@ bool				draw_image(t_game *game, int x, int y);
 void				exit_with_msg(char *msg);
 void				free_map_and_exit(t_map *map, char *msg);
 void				free_2d_arr(char **arr);
-void				free_map_and_exit(t_map *map, char *msg);
 void				free_game(t_game *game);
+void				delete_texture(t_game *game);
 
 #endif
